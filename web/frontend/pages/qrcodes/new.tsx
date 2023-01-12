@@ -1,7 +1,18 @@
-import {QRCodeForm} from "../../components";
+import { Page } from "@shopify/polaris";
+import { TitleBar } from "@shopify/app-bridge-react";
+import { QRCodeForm } from "../../components";
 
-const New = () => {
-    return <QRCodeForm QRCode={'string'} />;
-};
+export default function ManageCode() {
+    const breadcrumbs = [{ content: "QR codes", url: "/" }];
 
-export default New;
+    return (
+        <Page>
+            <TitleBar
+                title="Create new QR code"
+                breadcrumbs={breadcrumbs}
+                primaryAction={null}
+            />
+            <QRCodeForm QRCode={undefined} />
+        </Page>
+    );
+}
