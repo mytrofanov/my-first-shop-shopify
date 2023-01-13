@@ -12,7 +12,7 @@ export default function ManageCode() {
                 breadcrumbs={breadcrumbs}
                 primaryAction={null}
             />
-            <QRCodeForm QRCode={undefined} />
+            <QRCodeForm QRCode={undefined}  />
         </Page>
     );
 }
