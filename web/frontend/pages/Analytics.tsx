@@ -2,6 +2,7 @@ import {Card, Page, Layout, TextContainer, Heading, DisplayText, TextStyle} from
 import { TitleBar, useAppBridgeState } from "@shopify/app-bridge-react";
 import { useAppQuery } from "../hooks";
 import { useState } from "react";
+import Sales from '../components/sales';
 
 export default function Analytics() {
     const appState = useAppBridgeState();
@@ -45,7 +46,7 @@ export default function Analytics() {
     console.log('products: ', products)
 
     return (
-        <Page>
+        <Page fullWidth>
             <TitleBar
                 title="Analytics"
                 primaryAction={{
@@ -94,6 +95,7 @@ export default function Analytics() {
                     </Card>
                 </Layout.Section>
             </Layout>
+            <Sales />
         </Page>
     );
 }
