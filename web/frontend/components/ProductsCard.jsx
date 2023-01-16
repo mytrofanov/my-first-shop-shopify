@@ -14,6 +14,7 @@ export function ProductsCard() {
   const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
   const fetch = useAuthenticatedFetch();
+  console.log('toastProps: ', toastProps);
 
   const {
     data,
@@ -28,26 +29,11 @@ export function ProductsCard() {
       },
     },
   });
-
+  console.log('ProductsCard data: ', data);
+  console.log('refetchProductCount: ', refetchProductCount);
   const toastMarkup = toastProps.content && !isRefetchingCount && (
     <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
   );
-
-  const handlePopulate = async () => {
-    setIsLoading(true);
-    const response = await fetch("/api/products/create");
-
-    if (response.ok) {
-      await refetchProductCount();
-      setToastProps({ content: "5 products created!" });
-    } else {
-      setIsLoading(false);
-      setToastProps({
-        content: "There was an error creating products",
-        error: true,
-      });
-    }
-  };
 
   return (
     <>
@@ -55,22 +41,13 @@ export function ProductsCard() {
       <Card
         title="Product Counter"
         sectioned
-        primaryFooterAction={{
-          content: "Populate 5 products",
-          onAction: handlePopulate,
-          loading: isLoading,
-        }}
       >
         <TextContainer spacing="loose">
-          <p>
-            Sample products are created with a default title and price. You can
-            remove them at any time.
-          </p>
           <Heading element="h4">
             TOTAL PRODUCTS
             <DisplayText size="medium">
               <TextStyle variation="strong">
-                {isLoadingCount ? "-" : data.count}
+                {isLoadingCount ? "-" : (data ? data.count : 'no data') }
               </TextStyle>
             </DisplayText>
           </Heading>
