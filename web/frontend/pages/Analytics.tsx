@@ -1,13 +1,15 @@
-import { Card, Page, Layout, TextContainer, Heading } from "@shopify/polaris";
+import {Card, Page, Layout, TextContainer, Heading, DisplayText, TextStyle} from "@shopify/polaris";
 import { TitleBar, useAppBridgeState } from "@shopify/app-bridge-react";
-import { ProductsCard } from "../components";
 import { useAppQuery } from "../hooks";
+import { useState } from "react";
 
 export default function Analytics() {
     const appState = useAppBridgeState();
+    const [isLoading, setIsLoading] = useState(true);
+    const emptyToastProps = { content: null };
     // console.log('appState: ', appState);
     const {
-        data,
+        data: QRCodes,
     } = useAppQuery({
         url: "/api/qrcodes",
     });
@@ -18,6 +20,7 @@ export default function Analytics() {
     });
     let totalSum = 0;
     let productItems = 0;
+    if (products) {
     products.map(product => {
         product.variants.map(productVariant => {
             if (productVariant.inventory_quantity > 0 ) {
@@ -26,9 +29,21 @@ export default function Analytics() {
             }
         })
     } )
-    console.log('QRCodes data: ', data)
+    }
+    const {
+        data,
+        isLoading: isLoadingCount,
+    } = useAppQuery({
+        url: "/api/products/count",
+        reactQueryOptions: {
+            onSuccess: () => {
+                setIsLoading(false);
+            },
+        },
+    });
+
     console.log('products: ', products)
-    console.log('totalSum: ', totalSum)
+
     return (
         <Page>
             <TitleBar
@@ -45,23 +60,26 @@ export default function Analytics() {
                 ]}
             />
             <Layout>
-                <Layout.Section>
-                    {/*<Card sectioned>*/}
-                    {/*    <Heading>QR codes</Heading>*/}
-                    {/*    <TextContainer>*/}
-                    {/*        <p>Quality: {QRCodes ? QRCodes.length : 'none'}</p>*/}
-                    {/*    </TextContainer>*/}
-                    {/*</Card>*/}
-                        <ProductsCard />
+                <Layout.Section secondary>
+                    <>
+                        <Card
+                            sectioned
+                        >
+                            <Heading>TOTAL PRODUCTS</Heading>
+                            <TextContainer spacing="loose">
+                                    {isLoadingCount ? "-" : (data ? data.count : 'no data') }
+                            </TextContainer>
+                        </Card>
+                        <Card sectioned>
+                            <Heading>Total cost of goods</Heading>
+                            <TextContainer>
+                                <p>{totalSum}</p>
+                            </TextContainer>
+                        </Card>
+                    </>
 
                 </Layout.Section>
                 <Layout.Section secondary>
-                    <Card sectioned>
-                        <Heading>Total cost of goods</Heading>
-                        <TextContainer>
-                            <p>{totalSum}</p>
-                        </TextContainer>
-                    </Card>
                     <Card sectioned>
                         <Heading>Total Product items</Heading>
                         <TextContainer>
@@ -71,7 +89,7 @@ export default function Analytics() {
                     <Card sectioned>
                         <Heading>Total QRCodes</Heading>
                         <TextContainer>
-                            <p>{data ? data.length : 'none'}</p>
+                            <p>{QRCodes ? QRCodes.length : 'none'}</p>
                         </TextContainer>
                     </Card>
                 </Layout.Section>
