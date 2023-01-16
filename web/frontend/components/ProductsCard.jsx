@@ -9,18 +9,16 @@ import {
 import { Toast } from "@shopify/app-bridge-react";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 
+
 export function ProductsCard() {
   const emptyToastProps = { content: null };
   const [isLoading, setIsLoading] = useState(true);
   const [toastProps, setToastProps] = useState(emptyToastProps);
   const fetch = useAuthenticatedFetch();
-  console.log('toastProps: ', toastProps);
 
   const {
     data,
-    refetch: refetchProductCount,
     isLoading: isLoadingCount,
-    isRefetching: isRefetchingCount,
   } = useAppQuery({
     url: "/api/products/count",
     reactQueryOptions: {
@@ -29,15 +27,9 @@ export function ProductsCard() {
       },
     },
   });
-  console.log('ProductsCard data: ', data);
-  console.log('refetchProductCount: ', refetchProductCount);
-  const toastMarkup = toastProps.content && !isRefetchingCount && (
-    <Toast {...toastProps} onDismiss={() => setToastProps(emptyToastProps)} />
-  );
 
   return (
     <>
-      {toastMarkup}
       <Card
         title="Product Counter"
         sectioned

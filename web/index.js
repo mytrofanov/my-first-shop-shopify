@@ -9,6 +9,7 @@ import applyQrCodeApiEndpoints from "./middleware/qr-code-api.js";
 import GDPRWebhookHandlers from "./gdpr.js";
 
 import applyQrCodePublicEndpoints from "./middleware/qr-code-public.js";
+import applyProductsEndpoints from "./middleware/products-api.js";
 
 const PORT = parseInt(process.env.BACKEND_PORT || process.env.PORT, 10);
 
@@ -37,6 +38,20 @@ applyQrCodePublicEndpoints(app);
 app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(express.json());
+
+app.get("/api/products/count", async (_req, res) => {
+  const countData = await shopify.api.rest.Product.count({
+    session: res.locals.shopify.session,
+  });
+  res.status(200).send(countData);
+});
+
+app.get("/api/products/all", async (_req, res) => {
+  const products = await shopify.api.rest.Product.all({
+    session: res.locals.shopify.session,
+  });
+  res.status(200).send(products);
+});
 
 applyQrCodeApiEndpoints(app);
 
