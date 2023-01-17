@@ -26,12 +26,6 @@ export default function Products() {
                     content: "Primary action",
                     onAction: () => console.log("Primary action"),
                 }}
-                // secondaryActions={[
-                //     {
-                //         content: "Secondary action",
-                //         onAction: () => console.log("Secondary action"),
-                //     },
-                // ]}
             />
             {loadingMarkup}
             <ResourceList
@@ -58,9 +52,9 @@ export default function Products() {
                             {(product.variants && product.variants.length) && product.variants.map(variant => {
                                 return (
                                     <div key={variant.id}>
-                                        <p>Title: {variant.title}</p>
-                                        <p>Quantity: {variant.inventory_quantity}</p>
-                                        <p>Price: {variant.price}</p>
+                                        <span>Variant: {variant.title} {' '}</span>
+                                        <span>Quantity: {variant.inventory_quantity}{' '}</span>
+                                        <span>Price: {variant.price}{' '}</span>
                                     </div>
                                 )
                             })
