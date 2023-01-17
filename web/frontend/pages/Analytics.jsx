@@ -1,21 +1,20 @@
-import {Card, Page, Layout, TextContainer, Heading, DisplayText, TextStyle} from "@shopify/polaris";
-import { TitleBar, useAppBridgeState } from "@shopify/app-bridge-react";
+import {Card, Page, Layout, TextContainer, Heading } from "@shopify/polaris";
+import {Loading, TitleBar, useAppBridgeState} from "@shopify/app-bridge-react";
 import { useAppQuery } from "../hooks";
-import { useState } from "react";
 import Sales from '../components/sales';
 
 export default function Analytics() {
     const appState = useAppBridgeState();
-    const [isLoading, setIsLoading] = useState(true);
-    const emptyToastProps = { content: null };
-    // console.log('appState: ', appState);
+
     const {
         data: QRCodes,
+        isLoading: isLoadingQRCodes,
     } = useAppQuery({
         url: "/api/qrcodes",
     });
     const {
         data: products,
+        isLoading: isLoadingProducts,
     } = useAppQuery({
         url: "/api/products/all",
     });
@@ -36,12 +35,13 @@ export default function Analytics() {
         isLoading: isLoadingCount,
     } = useAppQuery({
         url: "/api/products/count",
-        reactQueryOptions: {
-            onSuccess: () => {
-                setIsLoading(false);
-            },
-        },
     });
+
+    const loadingMarkup = (isLoadingQRCodes || isLoadingProducts || isLoadingCount) ? (
+        <Card sectioned>
+            <Loading />
+        </Card>
+    ) : null;
 
     console.log('products: ', products)
 
@@ -60,6 +60,8 @@ export default function Analytics() {
                     },
                 ]}
             />
+            {loadingMarkup}
+            {/*{(isLoadingQRCodes || isLoadingProducts || isLoadingCount) && <LoadingExample />}*/}
             <Layout>
                 <Layout.Section secondary>
                     <>

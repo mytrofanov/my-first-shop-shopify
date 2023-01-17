@@ -24,6 +24,10 @@ export default function App() {
                   label: "Analytics",
                   destination: "/analytics",
                 },
+                {
+                  label: "Products",
+                  destination: "/products",
+                },
               ]}
             />
             <Routes pages={pages} />
