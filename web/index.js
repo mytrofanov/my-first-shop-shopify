@@ -46,6 +46,15 @@ app.get("/api/products/count", async (_req, res) => {
   res.status(200).send(countData);
 });
 
+app.get("/api/cart", async (_req, res) => {
+  const countData = await shopify.api.rest({
+    session: res.locals.shopify.session,
+  });
+
+
+  res.status(200).send(countData);
+});
+
 app.get("/api/products/all", async (_req, res) => {
   const products = await shopify.api.rest.Product.all({
     session: res.locals.shopify.session,

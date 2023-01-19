@@ -10,9 +10,9 @@ export default function Products() {
     } = useAppQuery({
         url: "/api/products/all",
     });
-    console.log('products: ', products);
+    console.log('Products page, products: ', products);
 
-    const loadingMarkup = isLoadingProducts ? (
+    const loadingMarkup = isLoadingProducts || !products ? (
         <Card sectioned>
             <Loading />
             <SkeletonBodyText />

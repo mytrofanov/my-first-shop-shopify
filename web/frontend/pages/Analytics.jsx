@@ -43,8 +43,6 @@ export default function Analytics() {
         </Card>
     ) : null;
 
-    console.log('products: ', products)
-
     return (
         <Page fullWidth>
             <TitleBar

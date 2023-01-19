@@ -28,6 +28,10 @@ export default function App() {
                   label: "Products",
                   destination: "/products",
                 },
+                  {
+                  label: "Cart info",
+                  destination: "/cartpage",
+                },
               ]}
             />
             <Routes pages={pages} />
